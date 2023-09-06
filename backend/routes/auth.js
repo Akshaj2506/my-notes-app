@@ -3,13 +3,11 @@ const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
-const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
-
-dotenv.config("../.env");
+const fetchUser = require('../middleware/fetchuser');
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Creating a User using POST request route: "/api/auth/create"; No Login Required
+// Creating an endpoint for User using POST request route: "/api/auth/create"; No Login Required
 router.post('/create',
    [
       body('name', "Minimum length of name should be 4 characters").isLength({ min: 4 }),
@@ -77,8 +75,7 @@ router.post('/login',
             return res.status(400).json({error : "Kindly enter correct credentials"});
          }
          const deHashedPassword = await bcryptjs.compare(password, user.password);
-         console.log(password);
-         console.log(user.password);
+
          if (!deHashedPassword) {
             return res.status(400).json({error : "Kindly enter correct credentials"});
          }
@@ -96,5 +93,12 @@ router.post('/login',
    }
 )
 
+// POST request to Fetch user data using auth token
+// RESPONSE: user data
+router.post('/getuser', fetchUser, async (req, res) => {
+   const userID = req.user.id;
+   const user = await User.findById(userID).select("-password");
+   res.json(user);
+})
 
 module.exports = router;
