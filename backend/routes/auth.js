@@ -2,6 +2,12 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const router = express.Router();
+const bcryptjs = require("bcryptjs");
+const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
+
+dotenv.config("../.env");
+const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post('/create',
    [
@@ -23,13 +29,21 @@ router.post('/create',
          // Create user if no issues found
          const { name, email, password, date} = req.body;
          try {
+            const salt = await bcryptjs.genSalt(10);
+            const secPass = await bcryptjs.hash(password, salt);
             const createdUser = await User.create({
                name : name,
                email : email,
-               password : password,
+               password : secPass,
                date : date
             })
-            res.json(createdUser)
+            const data = {
+               user : {
+                  id: createdUser.id
+               }
+            }
+            const authToken = jwt.sign(data, JWT_SECRET);
+            res.json({authToken});
          } catch(err) {
             res.status(500).json({ error: err.message });
          }
