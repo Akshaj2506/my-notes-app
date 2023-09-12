@@ -46,7 +46,7 @@ router.put('/updatenote/:id', fetchUser, async (req, res) => {
       if (description) newNote.description = description;
       if (tag) newNote.tag = tag;
 
-      const note = await Note.findById(req.params.id)
+      const note = await Note.findById(req.params.id);
       if (!note) res.status(404).json({error: "Note not found"});
       if (req.user.id !== note.user.toString()) res.status(401).json({error : "Access not granted"});
 
@@ -56,6 +56,13 @@ router.put('/updatenote/:id', fetchUser, async (req, res) => {
       console.error(error.message);
       res.status(500).json({ error: "Internal Server Error" });
    }
+})
+
+router.delete('/removenote/:id', fetchUser, async (req, res) => {
+   const targetNote = await Note.findById(req.params.id);
+   if (!targetNote) return res.status(404).json({error : "Record Not Found"});
+   if (targetNote.user.toString() !== req.user.id) return res.status(403).json({error : "Access Denied"});
+   Note.findByIdAndDelete({_id : req.params.id}).then(res.json({resp: "Note Deleted Successfully"}));
 })
 
 module.exports = router;
