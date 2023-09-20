@@ -72,7 +72,7 @@ router.post('/login',
          const {email, password} = req.body;
          const user = await User.findOne({email});
          if (!user) {
-            return res.status(400).json({error : "Kindly enter correct credentials"});
+            return res.status(400).json({error : "User does not exist"});
          }
          const deHashedPassword = await bcryptjs.compare(password, user.password);
 

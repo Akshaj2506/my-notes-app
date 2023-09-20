@@ -1,17 +1,26 @@
-import './App.css';
+import '../App.css';
 import Navbar from './Navbar';
 import Menu from './Menu';
 import Notes from './Notes';
+import { useContext, useEffect } from 'react';
+import NoteContext from '../context/notes/noteContext';
 
-function App() {
-
+function Home() {
+   const user = useContext(NoteContext);
+   useEffect(() => {
+      user.updateState();
+      // eslint-disable-next-line
+   }, [])
    return (
       <>
          <Navbar />
          <Menu />
          <Notes />
+         <div>
+            The name of the user is {user.state.name} and the age is {user.state.age}
+         </div>
       </>
    );
 }
 
-export default App;
+export default Home;

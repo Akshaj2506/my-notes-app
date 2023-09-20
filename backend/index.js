@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const port = 5000;
-dotenv.config("./.env");
+dotenv.config();
 connectToMongo();
 app.use(express.json());
 
