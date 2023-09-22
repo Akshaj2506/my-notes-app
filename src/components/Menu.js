@@ -1,10 +1,8 @@
 import React from 'react'
-import Alert from './Alert'
 
 export default function Menu() {
   return (
     <>
-      <Alert />
       <div className="container my-3">
         <h2>Hello [user]</h2>
         <h3>Action:</h3>

@@ -23,8 +23,8 @@ export default function LoginForm() {
          <div className="container">
             <form action="">
                <div className="row-md-4">
-                  <label htmlFor="validationDefault01" className="form-label">E-mail ID</label>
-                  <input type="email" className="form-control" id="email-input" placeholder='User ID' required/>
+                  <label htmlFor="validationDefault01" className="form-label">E-mail</label>
+                  <input type="email" className="form-control" id="email-input" placeholder='E-mail' required/>
                </div>
                <div className="row-md-4 my-3">
                   <label htmlFor="validationDefault01" className="form-label">Password</label>

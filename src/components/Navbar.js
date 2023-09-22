@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import accountImg from './account.png';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
    const [theme, setTheme] = useState("light");
@@ -15,17 +16,21 @@ export default function Navbar() {
          setDark(false);
       }
    }
+   let location = useLocation();
    return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
          <div className="container-fluid mx-3">
-            <a className="navbar-brand" href="/">myNotesApp</a>
+            <Link className="navbar-brand" to="/">myNotesApp</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                <ul className="navbar-nav">
                   <li className="nav-item">
-                     <a className="nav-link active" aria-current="page" href="/">Home</a>
+                     <Link className={"nav-link "+((location.pathname === "/") ? "active": "")} aria-current="page" to="/">Home</Link>
+                  </li>
+                  <li className="nav-item">
+                     <Link className={"nav-link " + ((location.pathname === "/login") ? "active" : "")} aria-current="page" to="/login">Login</Link>
                   </li>
                   <li className="nav-item" style={{position: "absolute", right: 30}}>
                      <div className="btn-group mx-3">

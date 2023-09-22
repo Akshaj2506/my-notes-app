@@ -1,5 +1,4 @@
 import '../App.css';
-import Navbar from './Navbar';
 import Menu from './Menu';
 import Notes from './Notes';
 import { useContext, useEffect } from 'react';
@@ -13,7 +12,6 @@ function Home() {
    }, [])
    return (
       <>
-         <Navbar />
          <Menu />
          <Notes />
          <div>
