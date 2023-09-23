@@ -5,13 +5,17 @@ export default function LoginForm() {
    const login = async () => {
       const enteredEmail = document.getElementById('email-input').value;
       const enteredPassword = document.getElementById('password-input').value;
-      await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
          method: 'POST',
          body : JSON.stringify({
             email: enteredEmail,
             password: enteredPassword
-         })
-      }).then((res) => res.json());
+         }),
+         headers: {
+            "Content-Type" : "application/json"
+         }
+      })
+      console.log(res.json())
    }
    // useEffect(() => {
    //    login();
@@ -21,7 +25,7 @@ export default function LoginForm() {
          width: "fit-content"
       }}>
          <div className="container">
-            <form action="">
+            <form action="http://localhost:5000/api/auth/login" method='post'>
                <div className="row-md-4">
                   <label htmlFor="validationDefault01" className="form-label">E-mail</label>
                   <input type="email" className="form-control" id="email-input" placeholder='E-mail' required/>
