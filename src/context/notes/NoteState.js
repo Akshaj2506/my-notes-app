@@ -2,24 +2,18 @@ import { useState } from "react";
 import NoteContext from "./noteContext";
 
 const NoteState = (props) => {
-   const stateObj = {
-      name : "Akshaj",
-      age : 21
-   }
-   const [state, setState] = useState(stateObj);
-   const updateState = () => {
-      setTimeout(() => {
-         setState({
-            name: "Shubh",
-            age: 18
-         })
-      }, 1000);
-   }
+   const [data, setData] = useState([]);
+   // const [loggedIn, setLoggedIn] = useState(false);
+   // if (!(sessionStorage.getItem("auth-token"))) {
+   //    setLoggedIn(false);
+   // } else {
+   //    setLoggedIn(true);
+   // }
    return (
-      <NoteContext.Provider value={{state, updateState}}>
+      <NoteContext.Provider value={{data, setData}}>
          {props.children}
       </NoteContext.Provider>
-   )
+   )  
 }
 
 export default NoteState;

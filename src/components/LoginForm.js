@@ -5,7 +5,7 @@ export default function LoginForm() {
    const login = async () => {
       const enteredEmail = document.getElementById('email-input').value;
       const enteredPassword = document.getElementById('password-input').value;
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      await fetch('http://localhost:5000/api/auth/login', {
          method: 'POST',
          body : JSON.stringify({
             email: enteredEmail,
@@ -15,7 +15,10 @@ export default function LoginForm() {
             "Content-Type" : "application/json"
          }
       })
-      console.log(res.json())
+      .then((res) => res.json())
+      .then((data) => {
+         sessionStorage.setItem("auth-token", data.authToken)
+      })
    }
    // useEffect(() => {
    //    login();
