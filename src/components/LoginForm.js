@@ -24,9 +24,7 @@ export default function LoginForm() {
    //    login();
    // }, [])
    return (
-      <div style={{
-         width: "fit-content"
-      }}>
+      <div>
          <div className="container">
             <form action="http://localhost:5000/api/auth/login" method='post'>
                <div className="row-md-4">
