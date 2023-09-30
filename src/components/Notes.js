@@ -17,7 +17,7 @@ export default function Notes() {
       <button className="btn btn-success">Add <i className="fa-solid fa-plus"></i></button>
       <div className='row mb-3'>
         {data.notes.map((elem) => {
-          return (<NotesItem key={elem._id} tag={elem.tag} title={elem.title} description={elem.description} />)
+          return (<NotesItem key={elem._id} noteId={elem._id} tag={elem.tag} title={elem.title} description={elem.description} />)
         })}</div>
     </div>
   )

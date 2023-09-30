@@ -33,8 +33,16 @@ const NoteState = (props) => {
       }).then(res => res.json())
       .then((data) => setData({notes: data.notes}))
    }
+   const deleteNote = async (noteId) => {
+      await fetch(`http://localhost:5000/api/notes/removenote/${noteId}`,{
+         method: "DELETE",
+         headers: {
+            "auth-token": (sessionStorage.getItem("auth-token") ? sessionStorage.getItem("auth-token") : "")
+         }
+      })
+   }
    return (
-      <NoteContext.Provider value={{data, setData, addNote, fetchNotes}}>
+      <NoteContext.Provider value={{data, setData, addNote, fetchNotes, deleteNote}}>
          {props.children}
       </NoteContext.Provider>
    )  
