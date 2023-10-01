@@ -7,37 +7,43 @@ export default function LoginForm() {
       const enteredPassword = document.getElementById('password-input').value;
       await fetch('http://localhost:5000/api/auth/login', {
          method: 'POST',
-         body : JSON.stringify({
+         body: JSON.stringify({
             email: enteredEmail,
             password: enteredPassword
          }),
          headers: {
-            "Content-Type" : "application/json"
+            "Content-Type": "application/json"
+         }
+      })
+         .then((res) => res.json())
+         .then((data) => {
+            sessionStorage.setItem("auth-token", data.authToken)
+         })
+      await fetch("http://localhost:5000/api/auth/getuser", {
+         method: "POST",
+         headers: {
+            "auth-token": (sessionStorage.getItem("auth-token") ? sessionStorage.getItem("auth-token") : ""),
+            "Content-Type": "application/json"
          }
       })
       .then((res) => res.json())
-      .then((data) => {
-         sessionStorage.setItem("auth-token", data.authToken)
-      })
+      .then(data => sessionStorage.setItem("userInfo", JSON.stringify(data)))
    }
-   // useEffect(() => {
-   //    login();
-   // }, [])
    return (
       <div>
          <div className="container">
             <form action="http://localhost:5000/api/auth/login" method='post'>
                <div className="row-md-4">
                   <label htmlFor="validationDefault01" className="form-label">E-mail</label>
-                  <input type="email" className="form-control" id="email-input" placeholder='E-mail' required/>
+                  <input type="email" className="form-control" id="email-input" placeholder='E-mail' required />
                </div>
                <div className="row-md-4 my-3">
                   <label htmlFor="validationDefault01" className="form-label">Password</label>
-                  <input type="password" className="form-control" id="password-input" placeholder='Password' required/>
+                  <input type="password" className="form-control" id="password-input" placeholder='Password' required />
                </div>
                <div className="col-15">
                   <button className="btn btn-primary" type="button" onClick={login}>Login</button>
-               <button className="btn btn-secondary ms-3">Do not have an account? Sign Up</button>
+                  <button className="btn btn-secondary ms-3">Do not have an account? Sign Up</button>
                </div>
             </form>
          </div>

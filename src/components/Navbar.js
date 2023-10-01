@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import accountImg from './account.png';
 import { Link, useLocation } from 'react-router-dom';
+import NoteContext from '../context/notes/noteContext';
 
 export default function Navbar() {
    const [theme, setTheme] = useState("light");
    const [dark, setDark] = useState(false);
+   let {userDetails} = useContext(NoteContext);
+   userDetails = JSON.parse(userDetails);
    document.querySelector("html").setAttribute("data-bs-theme", theme);
 
    const toggleTheme = () => {
@@ -35,7 +38,7 @@ export default function Navbar() {
                   <li className="nav-item" style={{position: "absolute", right: 30}}>
                      <div className="btn-group mx-3">
                         <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                           <img src={accountImg} height={20} alt="" /> [user]
+                           <img src={accountImg} height={20} alt="" /> {userDetails.name}
                         </button>
                         <ul className="dropdown-menu" style={{minWidth: "50px"}}>
                            <li><a className="dropdown-item" href="/">Login</a></li>
