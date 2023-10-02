@@ -8,7 +8,8 @@ export default function Navbar() {
    const [theme, setTheme] = useState("light");
    const [dark, setDark] = useState(false);
    let { userDetails} = useContext(NoteContext);
-   const {alert} = useContext(NoteContext);
+   const {alert, checkLoggedIn} = useContext(NoteContext);
+   const isLoggedIn = checkLoggedIn();
    userDetails = JSON.parse(userDetails);
    document.querySelector("html").setAttribute("data-bs-theme", theme);
 
@@ -36,10 +37,10 @@ export default function Navbar() {
                         <Link className={"nav-link " + ((location.pathname === "/") ? "active" : "")} aria-current="page" to="/">Home</Link>
                      </li>
                      <li className="nav-item">
-                        <Link className={"nav-link " + ((location.pathname === "/login") ? "active" : "")} aria-current="page" to="/login">Login</Link>
+                        <Link className={"nav-link " + ((location.pathname === "/login") ? "active" : "") + " " + ((isLoggedIn) ? "disabled": "")} aria-current="page" to="/login">Login</Link>
                      </li>
                      <li className="nav-item">
-                        <Link className={"nav-link " + ((location.pathname === "/signup") ? "active" : "")} aria-current="page" to="/signup">Sign Up</Link>
+                        <Link className={"nav-link " + ((location.pathname === "/signup") ? "active" : "") + " " + ((isLoggedIn) ? "disabled": "")} aria-current="page" to="/signup">Sign Up</Link>
                      </li>
                      <li className="nav-item" style={{ position: "absolute", right: 30 }}>
                         <div className="btn-group mx-3">

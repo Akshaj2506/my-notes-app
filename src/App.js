@@ -8,9 +8,6 @@ import Home from './components/Home';
 import Auth from './components/Auth';
 import NoteState from './context/notes/NoteState';
 import Navbar from './components/Navbar';
-import Alert from './components/Alert';
-import { useContext } from 'react';
-import NoteContext from './context/notes/noteContext';
 
 export default function App() {
   return (

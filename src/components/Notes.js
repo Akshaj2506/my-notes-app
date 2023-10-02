@@ -32,7 +32,6 @@ export default function Notes() {
   return (
     <div className="container my-3">
       <h2>Hello {(userDetails) ? userDetails.name : ""}</h2>
-      <button className="btn btn-success">Add <i className="fa-solid fa-plus"></i></button>
       <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal
       </button>

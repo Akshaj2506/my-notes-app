@@ -10,9 +10,12 @@ export default function AddNote() {
       const enteredTags = document.getElementById("tags").value;
       await addNote(enteredTitle, enteredDesc, enteredTags);
       await fetchNotes();
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("tags").value = "";
    }
    return (
-      <form className='container' method="post" action='http://localhost:5000/api/notes/createnote'>
+      <form className='container mt-3' method="post" action='http://localhost:5000/api/notes/createnote'>
          <h3>Add a note</h3>
          <div className="mb-3">
             <label htmlFor="title" className="form-label">Title</label>
@@ -26,7 +29,7 @@ export default function AddNote() {
             <label htmlFor="tags" className="form-label">Tags:</label>
             <input type="text" className="form-control" id="tags" placeholder='Tags'/>
          </div>
-         <button type="button" className="btn btn-primary" onClick={async () => await createNote()}>Submit</button>
+         <button type="button" className="btn btn-success" onClick={async () => await createNote()}>Add <i className="fa-solid fa-plus"></i></button>
       </form>
    )
 }

@@ -35,15 +35,14 @@ router.post('/create',
          });
          }
          // Create user if no issues found
-         const { name, email, password, date } = req.body;
+         const { name, email, password} = req.body;
          try {
             const salt = await bcryptjs.genSalt(10);
             const secPass = await bcryptjs.hash(password, salt);
             const createdUser = await User.create({
                name: name,
                email: email,
-               password: secPass,
-               date: date
+               password: secPass
             })
             const data = {
                user: {
