@@ -30,11 +30,7 @@ const NoteState = (props) => {
    const addNote = async (title, description, tag) => {
       await fetch("http://localhost:5000/api/notes/createnote", {
          method: "POST",
-         body: JSON.stringify({
-            title: title,
-            description: description,
-            tag: tag
-         }),
+         body: JSON.stringify({title, description, tag}),
          headers: {
             "Content-Type": "application/json",
             "auth-token": (sessionStorage.getItem("auth-token") ? sessionStorage.getItem("auth-token") : "")

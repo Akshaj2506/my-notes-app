@@ -22,6 +22,10 @@ export default function Navbar() {
          setDark(false);
       }
    }
+   const logout = () => {
+      sessionStorage.clear();
+      window.location.reload();
+   }
    let location = useLocation();
    return (
       <>
@@ -53,6 +57,7 @@ export default function Navbar() {
                            </ul>
                         </div>
                         <button onClick={toggleTheme} className='btn btn-primary'>Enable {(dark) ? 'Light' : 'Dark'} Mode</button>
+                        <button onClick={logout} className={`ms-3 btn btn-primary ${(!isLoggedIn) ? "d-none" : ""}`}>Logout</button>
                      </li>
                   </ul>
                </div>
