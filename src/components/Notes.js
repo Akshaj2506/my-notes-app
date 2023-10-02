@@ -3,9 +3,11 @@ import NotesItem from './NotesItem';
 import NoteContext from '../context/notes/noteContext';
 
 export default function Notes() {
-  const { data, fetchNotes, editNote, userDetails } = useContext(NoteContext);
+  const { data, fetchNotes, editNote } = useContext(NoteContext);
+  let {userDetails} = useContext(NoteContext);
   const ref = useRef(null);
   const closeRef = useRef(null);
+  userDetails = JSON.parse(userDetails);
   const [note, setNote] = useState({
     noteId: null,
     title: "",
@@ -29,7 +31,7 @@ export default function Notes() {
   }
   return (
     <div className="container my-3">
-      <h2>Hello {JSON.parse(userDetails).name}</h2>
+      <h2>Hello {(userDetails) ? userDetails.name : ""}</h2>
       <button className="btn btn-success">Add <i className="fa-solid fa-plus"></i></button>
       <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal

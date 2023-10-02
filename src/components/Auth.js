@@ -1,8 +1,11 @@
 import React from 'react'
 import LoginForm from './LoginForm'
+import { useLocation } from 'react-router-dom'
+import SignupForm from './SignupForm';
 
 
 export default function Auth() {
+   const loc = useLocation();
    return (
       <>
          <main style={{
@@ -11,7 +14,8 @@ export default function Auth() {
             alignItems: "center",
             height: "100%"
          }}>
-            <LoginForm />
+            {(loc.pathname === "/login") && <LoginForm />}
+            {(loc.pathname === "/signup") && <SignupForm />}
          </main>
       </>
    )

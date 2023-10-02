@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './LoginForm.css'
+import { useNavigate } from 'react-router-dom';
+import NoteContext from '../context/notes/noteContext';
 
 export default function LoginForm() {
+   let navigate = useNavigate()
+   const {showAlert} = useContext(NoteContext);
    const login = async () => {
       const enteredEmail = document.getElementById('email-input').value;
       const enteredPassword = document.getElementById('password-input').value;
@@ -16,22 +20,29 @@ export default function LoginForm() {
          }
       })
          .then((res) => res.json())
-         .then((data) => {
-            sessionStorage.setItem("auth-token", data.authToken)
+         .then(async(data) => {
+            if (data.success) {
+               sessionStorage.setItem("auth-token", data.authToken)
+               await fetch("http://localhost:5000/api/auth/getuser", {
+                  method: "POST",
+                  headers: {
+                     "auth-token": (sessionStorage.getItem("auth-token") ? sessionStorage.getItem("auth-token") : ""),
+                     "Content-Type": "application/json"
+                  }
+               })
+                  .then((res) => res.json())
+                  .then(data => sessionStorage.setItem("userInfo", JSON.stringify(data)))
+                  .then(navigate("/"))
+                  .then(showAlert("success", "You have been successfully logged in"))
+            } else {
+               showAlert("danger", "Incorrect credentials")
+            }
          })
-      await fetch("http://localhost:5000/api/auth/getuser", {
-         method: "POST",
-         headers: {
-            "auth-token": (sessionStorage.getItem("auth-token") ? sessionStorage.getItem("auth-token") : ""),
-            "Content-Type": "application/json"
-         }
-      })
-      .then((res) => res.json())
-      .then(data => sessionStorage.setItem("userInfo", JSON.stringify(data)))
    }
    return (
       <div>
          <div className="container">
+            <h3>Login</h3>
             <form action="http://localhost:5000/api/auth/login" method='post'>
                <div className="row-md-4">
                   <label htmlFor="validationDefault01" className="form-label">E-mail</label>
@@ -43,7 +54,6 @@ export default function LoginForm() {
                </div>
                <div className="col-15">
                   <button className="btn btn-primary" type="button" onClick={login}>Login</button>
-                  <button className="btn btn-secondary ms-3">Do not have an account? Sign Up</button>
                </div>
             </form>
          </div>

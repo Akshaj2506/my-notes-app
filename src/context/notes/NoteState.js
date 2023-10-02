@@ -3,13 +3,30 @@ import NoteContext from "./noteContext";
 
 const NoteState = (props) => {
    const [data, setData] = useState({ notes: [] });
-   const userDetails = sessionStorage.getItem("userInfo")
-   // const [loggedIn, setLoggedIn] = useState(false);
-   // if (!(sessionStorage.getItem("auth-token"))) {
-   //    setLoggedIn(false);
-   // } else {
-   //    setLoggedIn(true);
-   // }
+   const [alert, setAlert] = useState({
+      type : "primary",
+      message: "",
+      status: false
+   })
+   const userDetails = sessionStorage.getItem("userInfo");
+   //eslint-disable-next-line
+   const [loggedIn, setLoggedIn] = useState(false);
+   const checkLoggedIn = () => {
+      if (sessionStorage.getItem("auth-token") === null) {
+         return false;
+      } else {
+         return true;
+      }
+   }
+   const updateAlert = (type, message, status) => {
+      setAlert({type, message, status})
+   }
+   const showAlert = (type, message) => {
+      updateAlert(type, message, true);
+      setTimeout(() => {
+         updateAlert("primary", "", false)
+      }, 3000)
+   }
    const addNote = async (title, description, tag) => {
       await fetch("http://localhost:5000/api/notes/createnote", {
          method: "POST",
@@ -58,7 +75,7 @@ const NoteState = (props) => {
       await fetchNotes();
    }
    return (
-      <NoteContext.Provider value={{ data, setData, addNote, fetchNotes, deleteNote, editNote, userDetails }}>
+      <NoteContext.Provider value={{ data, setData, addNote, fetchNotes, deleteNote, editNote, userDetails, loggedIn, checkLoggedIn, alert, showAlert}}>
          {props.children}
       </NoteContext.Provider>
    )

@@ -6,6 +6,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fetchUser = require('../middleware/fetchuser');
 const JWT_SECRET = process.env.JWT_SECRET;
+let success = false;
 
 // Creating an endpoint for User using POST request route: "/api/auth/create"; No Login Required
 router.post('/create',
@@ -18,12 +19,20 @@ router.post('/create',
       // Checking for any sort of errors in the request, return errors
       const errors = validationResult(req);
       if (!(errors.isEmpty())) {
-         res.status(400).json({ errors: errors.array() });
+         success = false;
+         res.status(400).json({
+            errors: errors.array(),
+            success: success
+         });
       } else {
          // Checking if the user already exists
          const user = await User.findOne({ email: req.body.email });
          if (user) {
-            return res.status(400).json({ error: "User already exists" });
+            success = false;
+            return res.status(400).json({
+               error: "User already exists",
+               success: success
+         });
          }
          // Create user if no issues found
          const { name, email, password, date } = req.body;
@@ -42,9 +51,14 @@ router.post('/create',
                }
             }
             const authToken = jwt.sign(data, JWT_SECRET);
-            res.json({ authToken });
+            success = true
+            res.json({ authToken, success });
          } catch (err) {
-            res.status(500).json({ error: err.message });
+            success = false
+            res.status(500).json({
+               error: err.message,
+               success: success
+            });
          }
       }
    }
@@ -66,18 +80,30 @@ router.post('/login',
    ], async (req, res) => {
       const errors = validationResult(req.body);
       if (!errors.isEmpty()) {
-         return res.status(400).json({errors : errors.array()});
+         success = false
+         return res.status(400).json({
+            errors : errors.array(),
+            success: success
+         });
       }
       try {
          const {email, password} = req.body;
          const user = await User.findOne({email});
          if (!user) {
-            return res.status(400).json({error : "User does not exist"});
+            success = false   
+            return res.status(400).json({
+               error : "User does not exist",
+               success : success
+            });
          }
          const deHashedPassword = await bcryptjs.compare(password, user.password);
 
          if (!deHashedPassword) {
-            return res.status(400).json({error : "Kindly enter correct credentials"});
+            success = false   
+            return res.status(400).json({
+               error : "Kindly enter correct credentials",
+               success : success
+            });
          }
          const data = {
             user : {
@@ -85,10 +111,12 @@ router.post('/login',
             }
          }
          const authToken = jwt.sign(data, JWT_SECRET);
-         res.json({authToken});
+         success = true;
+         res.json({authToken, success});
       } catch (error) {
          console.error(error.message);
-         res.status(403).json({error: "Internal Server Error"});
+         success = false;
+         res.status(403).json({error: "Internal Server Error", success: success});
       }
    }
 )
